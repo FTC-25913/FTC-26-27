@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @TeleOp(name="New BioBuzz TeleOp", group="Linear Opmode")
 public class NewTeleOp extends LinearOpMode {
@@ -16,8 +17,9 @@ public class NewTeleOp extends LinearOpMode {
 
     // Intake
 
-    private DcMotor intake = null;
+    private DcMotorEx intake;
 
+    private static final double Intake_Speed = 1500;
     private boolean previousAState = false;
     private boolean isIntakeOn = false;
 
@@ -43,7 +45,10 @@ public class NewTeleOp extends LinearOpMode {
 
         // Intake
 
-        intake = hardwareMap.get(DcMotor.class, "intake");
+        intake = hardwareMap.get(DcMotorEx.class, "intake");
+
+        intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intake.setDirection(DcMotor.Direction.FORWARD);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -84,9 +89,9 @@ public class NewTeleOp extends LinearOpMode {
             previousAState = currentAState;
 
             if (isIntakeOn) {
-                intake.setPower(1.0);
+                intake.setVelocity(Intake_Speed);
             } else {
-                intake.setPower(0);
+                intake.setVelocity(0);
             }
 
             // =============================================================================
